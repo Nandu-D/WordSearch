@@ -16,8 +16,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--
+    <LinearLayout
+        android:id="@+id/text_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+    -->
     <!--  First Row  -->
-
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/letter_1_1_text_view"
         android:layout_width="0dp"
@@ -1191,12 +1197,15 @@
         app:layout_constraintLeft_toRightOf="@id/letter_12_7_text_view"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/letter_11_1_text_view" />
+
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/redo_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:iconGravity="textStart"
+        android:theme="@style/FormButton"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         app:icon="@drawable/ic_refresh_black_24dp"
-        android:id="@+id/redo_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

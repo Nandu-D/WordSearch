@@ -7,13 +7,22 @@ public class WordSearch {
     private final int HORIZONTAL = 0;
     private final int VERTICAL = 1;
 
-    char displayMatrix[][] = new char[8][12];
-    int selectionMatrix[][] = new int[8][12];
+    char displayMatrix[][] = new char[12][8];
+    int selectionMatrix[][] = new int[12][8];//Using it for building grid and for selection process
     ArrayList<String> questions = new ArrayList<>();
 
-    boolean loadQuestion() {
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 12; y++) {
+    public WordSearch() {
+        for (int x = 0; x < 12; x++) {
+            for (int y = 0; y < 8; y++) {
+                displayMatrix[x][y] = 0;
+                selectionMatrix[x][y] = 0;
+            }
+        }
+    }
+
+    public void loadQuestion() {
+        for (int x = 0; x < 12; x++) {
+            for (int y = 0; y < 8; y++) {
                 displayMatrix[x][y] = randomChar();
             }
         }
@@ -26,17 +35,74 @@ public class WordSearch {
             }
             questions.add(word);
 
-            int randomX = randomInt(8);
-            int randomY = randomInt(12);
+            int randomColumn = randomInt(8);
+            int randomRow = randomInt(12);
             boolean isHorizontalOrientation = randomBoolean();
+            String question = questions.get(questions.size() - 1);
+            int questionLength = question.length();
 
             if (isHorizontalOrientation) {
-                
-            } else {
+                if (questionLength <= 7 - randomColumn + 1) {
+                    for (int i = randomColumn; i < questionLength; i++) {
+                        if (selectionMatrix[randomRow][i] == 0 || displayMatrix[randomRow][i] == question.charAt(i - randomColumn)) {
+                            //If no overlap or if overlapping position has same character
+                            displayMatrix[randomRow][i] = question.charAt(i - randomColumn);
+                            selectionMatrix[randomRow][i] = 1;
+                        } else {
+                            questions.remove(questions.size() - 1);
+                            continue;
+                        }
+                    }
+                } else if (randomColumn - questionLength + 1 >= 0 &&
+                        questionLength <= 7 - (randomColumn - questionLength + 1) + 1) {
 
+                    randomColumn = randomColumn - questionLength + 1;
+                    for (int i = randomColumn; i < questionLength; i++) {
+                        if (selectionMatrix[randomRow][i] == 0 || displayMatrix[randomRow][i] == question.charAt(i - randomColumn)) {
+                            //If no overlap or if overlapping position has same character
+                            displayMatrix[randomRow][i] = question.charAt(i - randomColumn);
+                            selectionMatrix[randomRow][i] = 1;
+                        } else {
+                            questions.remove(questions.size() - 1);
+                            continue;
+                        }
+                    }
+                } else {
+                    questions.remove(questions.size() - 1);
+                    continue;
+                }
+            } else { // Vertical orientation
+                if (questionLength <= 11 - randomRow + 1) {
+                    for (int i = randomRow; i < questionLength; i++) {
+                        if (selectionMatrix[i][randomColumn] == 0 || displayMatrix[i][randomColumn] == question.charAt(i - randomRow)) {
+                            //If no overlap or if overlapping position has same character
+                            displayMatrix[i][randomColumn] = question.charAt(i - randomRow);
+                            selectionMatrix[i][randomColumn] = 1;
+                        } else {
+                            questions.remove(questions.size() - 1);
+                            continue;
+                        }
+                    }
+                } else if (randomRow - questionLength + 1 >= 0 &&
+                        questionLength <= 7 - (randomRow - questionLength + 1) + 1) {
+
+                    randomRow = randomRow - questionLength + 1;
+                    for (int i = randomRow; i < questionLength; i++) {
+                        if (selectionMatrix[i][randomColumn] == 0 || displayMatrix[i][randomColumn] == question.charAt(i - randomRow)) {
+                            //If no overlap or if overlapping position has same character
+                            displayMatrix[i][randomColumn] = question.charAt(i - randomRow);
+                            selectionMatrix[i][randomColumn] = 1;
+                        } else {
+                            questions.remove(questions.size() - 1);
+                            continue;
+                        }
+                    }
+                } else {
+                    questions.remove(questions.size() - 1);
+                    continue;
+                }
             }
         }
-        return false;
     }
 
     private String randomWord() {
